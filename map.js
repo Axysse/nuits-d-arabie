@@ -7,6 +7,7 @@ const placeDiv = document.getElementById("placeDiv")
 const showInventory = document.getElementById("showInventory")
 const bttnBuy = document.querySelectorAll(".bttnBuy")
 const infoDiv = document.getElementById("infoDiv")
+let itemBtn = []
 
 var modal = document.getElementById("myModal");
 var modalVillageImage = document.getElementById("modalVillageImage");
@@ -35,6 +36,11 @@ bttnBuy.forEach(bttn => {
     buy(item)
   })
 });
+
+// itemBtn.forEach(el => {
+//   el.addEventListener("click", () =>
+//   )
+// });
 
 const villageNames = {
   27: "Izmir",
@@ -180,13 +186,19 @@ function buy(item){
   player.money = player.money - price
   console.log(player.money)
   const newItem = document.createElement("div")
+  newItem.classList.add("flex", "flex-col", "items-center")
   const newItemImg = document.createElement("img")
   newItemImg.src = item
-  newItemImg.classList.add("w-24", "mt-2")
+  newItemImg.classList.add("w-18", "mt-2")
   newItem.appendChild(newItemImg)
+  const newItemBtn = document.createElement("button")
+  newItemBtn.classList.add("p-1", "bg-yellow-400", "itemBtn")
+  newItemBtn.innerHTML = "vendre"
   showInventory.appendChild(newItem)
+  newItem.appendChild(newItemBtn)
   pushInventory(item)
-  
+  itemBtn.push(newItemBtn)
+  console.log(itemBtn)
 }
 
 function pushInventory(item){
