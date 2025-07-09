@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="assets/main.css" />
+  </head>
+  <body class="bg-blue-700">
+    <header></header>
+    <main class="flex flex-col justify-center items-center">
+      <section id="showInventory" class="bg-orange-900 flex justify-center mt-4 mx-96 w-6xl border-yellow-600 border-6 rounded-lg h-32  flex flex-wrap gap-1">
+
+      </section>
+      <section
+        id="display"
+        class="bg-cover flex justify-center mt-8 mx-96 max-w-6xl border-yellow-600 border-6 rounded-lg max-h-5xl bg-white flex flex-wrap gap-1"
+      ></section>
+      <section
+        id="message"
+        class="my-4 mx-96 p-4 w-[35%] border-yellow-900 border-4 rouded-lg h-[20vh] bg-white text-white font-extrabold text-xl text-center"
+      ></section>
+      <section id="choice">
+        <button id="start" class="bg-red-700 p-2">Nouvelle partie</button>
+      </section>
+    </main>
+
+    <div id="myModal" class="modal">
+      <div class="modal-content flex flex-row">
+        <span class="close-button">&times;</span>
+        <div id="infoDiv" class="flex flex-col justify-center items-center">
+          <p><span class="text-2xl font-bold">population :</span> <span class="text-xl font-bold text-blue-900">5328</span> âmes et au moins le double d'habitants.</p>
+          <p><span class="text-2xl font-bold">cours :</span> hausse de la demande en<span class="text-xl font-bold text-green-900"> café</span>.</p>
+        </div>
+        <div id="placeDiv" class="flex flex-col justify-center items-center">
+          <div>
+            <h2 id="villageName"></h2>
+            <img
+              id="modalVillageImage"
+              src=""
+              alt="Village Image"
+              class="modal-image"
+            />
+          </div>
+          <div>
+            <button id="aller" class="bg-green-700 p-2">Se rendre ici</button>
+          </div>
+        </div>
+        <div id="merchantDiv" class="flex flex-col justify-center items-center hidden w-full">
+          <h2>Marchandises en vente</h2>
+          <div class="flex flex-row justify-center">
+          <div>
+            <img class="w-32" src="./assets/img/coffee.png" />
+            <p>50 $</p>
+            <button class="bg-yellow-700 p-4 bttnBuy" name="coffe" value="./assets/img/coffee.png">Acheter</button>
+          </div>
+            <div>
+            <img class="w-32" src="./assets/img/spice.png" />
+            <p>75 $</p>
+            <button class="bg-yellow-700 p-4 bttnBuy" name="spice" value="./assets/img/spice.png">Acheter</button>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="map.js"></script>
+  </body>
+</html>
