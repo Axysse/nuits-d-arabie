@@ -8,6 +8,9 @@ const showInventory = document.getElementById("showInventory");
 const bttnBuy = document.querySelectorAll(".bttnBuy");
 const infoDiv = document.getElementById("infoDiv");
 const displayMerch = document.getElementById("displayMerch");
+let pop = document.getElementById("pop")
+let favoriteMerch = document.getElementById("favoriteMerch")
+
 
 var modal = document.getElementById("myModal");
 var modalVillageImage = document.getElementById("modalVillageImage");
@@ -143,6 +146,16 @@ function placeCities() {
 function eventClickCell(cell) {
   if (cell.getAttribute("type") === "village") {
     message.innerHTML = "";
+    pop.textContent = ""; 
+    favoriteMerch.textContent = "";
+    allCities.forEach(city => {
+      if(city.position == cell.id){
+        const population = city.population;
+        pop.textContent = population;
+        const favoriteMerchandise = city.favoriteMerch
+        favoriteMerch.textContent = favoriteMerchandise
+      }
+    });
     const name = cell.dataset.villageName;
     const imageSrc = "./assets/img/village.png";
     placeName.textContent = name;
