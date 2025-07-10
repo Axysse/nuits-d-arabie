@@ -290,8 +290,17 @@ function showMerch(cell) {
             merchImg.classList.add("w-32");
             const merchName = document.createElement("p");
             merchName.innerText = merch.name;
+
             const merchPrice = document.createElement("p");
-            merchPrice.innerText = merch.basePrice + "$";
+            let adjustedPrice = merch.basePrice;
+            if (city.variationValue && city.variationValue.length > 0) {
+              const variation = city.variationValue[0][merch.name];
+              if (variation !== undefined) {
+                adjustedPrice += variation;
+              }
+            }
+            merchPrice.innerText = adjustedPrice + "$";
+
             const merchBuy = document.createElement("button");
             merchBuy.innerHTML = "Acheter";
             merchBuy.classList.add("p-2", "bg-orange-600");
