@@ -5,21 +5,29 @@
             "id": "cafe",
             "image": "../assets/img/coffee.png",
             "description" : "Délicieux breuvage",
-            "basePrice" : 35
+            "basePrice" : 10
         },
         {
             "name": "épices",
             "id": "epices",
             "image": "../assets/img/spice.png",
             "description" : "Pour que la bouffe soit pas trop fade.",
-            "basePrice" : 75
+            "basePrice" : 15
         },
         {
             "name": "soie",
             "id": "soie",
             "image": "../assets/img/silk.png",
             "description" : "C'est tout doux.",
-            "basePrice" : 100
+            "basePrice" : 25
+        }
+        ,
+        {
+            "name": "hareng",
+            "id": "hareng",
+            "image": "../assets/img/hareng.png",
+            "description" : "Ca pue",
+            "basePrice" : -5
         }
     ]
 }

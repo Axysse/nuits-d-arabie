@@ -3,16 +3,17 @@
         {
             "name" : "Izmir",
             "position" : 27,
-            "population": 5248,
+            "population": 3248,
             "availableMerch" : [
                 "épices", "soie"
             ],
             "favoriteMerch" : "café",
             "variationValue" : [
                 {
-                    "café" : 15,
+                    "café" : 10,
                     "épices": 2,
-                    "soie": -18
+                    "soie": -10,
+                    "hareng": 2
                 }
             ]
         },
@@ -28,7 +29,8 @@
                 {
                     "café" : -5,
                     "épices": 2,
-                    "soie": 8
+                    "soie": 8,
+                    "hareng": 3
                 }
             ]
         },
@@ -42,9 +44,27 @@
             "favoriteMerch" : "épices",
             "variationValue" : [
                 {
-                    "café" : 3,
+                    "café" : 1,
                     "épices": 7,
-                    "soie": -2
+                    "soie": -3,
+                    "hareng": 3
+                }
+            ]
+        },
+        {
+            "name" : "Maara",
+            "position" : 7,
+            "population": 976,
+            "availableMerch" : [
+                "soie", "café", "hareng"
+            ],
+            "favoriteMerch" : "épices",
+            "variationValue" : [
+                {
+                    "café" : 102,
+                    "épices": 150,
+                    "soie": 86,
+                    "hareng": -10
                 }
             ]
         }

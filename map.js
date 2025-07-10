@@ -10,6 +10,7 @@ const infoDiv = document.getElementById("infoDiv");
 const displayMerch = document.getElementById("displayMerch");
 let pop = document.getElementById("pop");
 let favoriteMerch = document.getElementById("favoriteMerch");
+const showPlayerMoney = document.getElementById("showPlayerMoney")
 
 var modal = document.getElementById("myModal");
 var modalVillageImage = document.getElementById("modalVillageImage");
@@ -213,6 +214,7 @@ function firstPlacement(cell) {
     cell.appendChild(playerSprite);
     message.innerHTML = "";
     currentCell = cell.id;
+    showPlayerMoney.innerText = player.money
   }
   newgame = false;
 }
@@ -286,6 +288,7 @@ function buy(item, adjustedPrice) {
   newItem.appendChild(newItemBtn);
   allSellBtn.push(newItemBtn);
   pushInventory(item);
+  showPlayerMoney.innerText = player.money
   newItemBtn.addEventListener("click", () => {
     sell(item);
   });
@@ -368,18 +371,16 @@ function sell(item) {
       if (city.variationValue && city.variationValue.length > 0) {
         const variation = city.variationValue[0][item.name];
         if (variation !== undefined) {
-          adjustedPrice += variation + (5 * city.population) / 100;
+          adjustedPrice += variation + (2 * city.population) / 100;
         }
       }
     }
   });
-
   player.money += adjustedPrice;
+  showPlayerMoney.innerText = player.money
   console.log(player.money);
-
   let itemsToSell = showInventory.querySelectorAll(`div[name="${item.name}"]`);
   let itemSold = false;
-
   itemsToSell.forEach((itemToSell) => {
     if (itemToSell.getAttribute("name") === item.name && !itemSold) {
       itemToSell.remove();
@@ -397,6 +398,7 @@ function sell(item) {
       itemFoundInInventory = true;
       return;
     }
+    
   });
 
   if (!itemFoundInInventory) {
