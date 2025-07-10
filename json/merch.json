@@ -11,8 +11,15 @@
             "name": "épices",
             "id": "epices",
             "image": "../assets/img/spice.png",
-            "description" : "Pour que la bouffe soir pas trop fade.",
+            "description" : "Pour que la bouffe soit pas trop fade.",
             "basePrice" : 75
+        },
+        {
+            "name": "soie",
+            "id": "soie",
+            "image": "../assets/img/silk.png",
+            "description" : "C'est tout doux.",
+            "basePrice" : 100
         }
     ]
 }

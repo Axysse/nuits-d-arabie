@@ -1,0 +1,52 @@
+{
+    "cities": [
+        {
+            "name" : "Izmir",
+            "position" : 27,
+            "population": 5248,
+            "availableMerch" : [
+                "épices", "soie"
+            ],
+            "favoriteMerch" : "café",
+            "variationValue" : [
+                {
+                    "café" : 10,
+                    "épices": 2,
+                    "soie": -5
+                }
+            ]
+        },
+        {
+            "name" : "Adana",
+            "position" : 108,
+            "population": 3104,
+            "availableMerch" : [
+                "épices", "café"
+            ],
+            "favoriteMerch" : "soie",
+            "variationValue" : [
+                {
+                    "café" : -5,
+                    "épices": 2,
+                    "soie": 8
+                }
+            ]
+        },
+        {
+            "name" : "karakoroum",
+            "position" : 72,
+            "population": 2157,
+            "availableMerch" : [
+                "soie", "café"
+            ],
+            "favoriteMerch" : "épices",
+            "variationValue" : [
+                {
+                    "café" : 3,
+                    "épices": 7,
+                    "soie": -2
+                }
+            ]
+        }
+    ]
+}
