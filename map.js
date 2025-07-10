@@ -21,6 +21,7 @@ let currentCell = null;
 
 let allMerch = [];
 let allCells = [];
+let allSellBtn = [];
 
 async function fetchMerch() {
   try {
@@ -125,9 +126,7 @@ async function createGrid() {
 }
 
 function placeCities() {
-  console.log(allCities);
   allCities.forEach((city) => {
-    console.log(city.position);
     allCells.forEach((cell) => {
       if (city.position == cell.id) {
         let village = document.createElement("img");
@@ -153,9 +152,15 @@ function eventClickCell(cell) {
     message.innerHTML = "Y'a foule ici!";
     merchantDiv.classList.add("hidden");
     placeDiv.classList.remove("hidden");
+        allSellBtn.forEach(btn => {
+        btn.classList.add("hidden")
+      });
     if (player.position === cell.id) {
       placeDiv.classList.add("hidden");
       merchantDiv.classList.remove("hidden");
+      allSellBtn.forEach(btn => {
+        btn.classList.remove("hidden")
+      });
       showMerch(cell);
     }
   } else {
@@ -169,6 +174,9 @@ function eventClickCell(cell) {
     message.innerHTML = "Il fait bon ici!";
     merchantDiv.classList.add("hidden");
     placeDiv.classList.remove("hidden");
+        allSellBtn.forEach(btn => {
+        btn.classList.add("hidden")
+      });
   }
 
   closeButton.onclick = function () {
@@ -212,24 +220,44 @@ function goTo(currentCellId, selectedCellId) {
   let endCell = document.getElementById(selectedCellId);
   console.log(endCell);
   let destinationCell = selectedCellId;
+
   if (newgame !== true) {
     const currentPlayerSprite = startCell.querySelector(".playerImg");
-    currentPlayerSprite.remove();
-
+    if (currentPlayerSprite) { 
+      currentPlayerSprite.remove();
+    }
     const playerSprite = document.createElement("img");
     playerSprite.src = "./assets/img/player.png";
     playerSprite.classList.add("absolute", "top-0", "playerImg");
     endCell.appendChild(playerSprite);
 
-    player.position = selectedCellId;
-    currentCellId = selectedCellId;
+    player.position = destinationCell;
+    if (endCell.getAttribute("type") === "village") {
+      const name = endCell.dataset.villageName;
+      const imageSrc = "./assets/img/village.png";
+      placeName.textContent = name;
+      modalVillageImage.src = imageSrc;
+      message.innerHTML = "Y'a foule ici!";
+      merchantDiv.classList.remove("hidden"); 
+      placeDiv.classList.add("hidden"); 
+      allSellBtn.forEach((btn) => {
+        btn.classList.remove("hidden");
+      });
+      showMerch(endCell); 
+    } else {
+      merchantDiv.classList.add("hidden");
+      placeDiv.classList.remove("hidden");
+      allSellBtn.forEach((btn) => {
+        btn.classList.add("hidden");
+      });
+    }
+    modal.style.display = "flex";
     selectedCellId = null;
   }
 }
 
 function buy(item) {
   let price;
-
   player.money = player.money - item.basePrice;
   console.log(player.money);
   const newItem = document.createElement("div");
@@ -240,13 +268,13 @@ function buy(item) {
   newItemImg.classList.add("w-18", "mt-2");
   newItem.appendChild(newItemImg);
   const newItemBtn = document.createElement("button");
-  newItemBtn.classList.add("p-1", "bg-yellow-400", "itemBtn");
+  newItemBtn.classList.add("p-1", "bg-yellow-400", "hidden", "itemBtn");
   newItemBtn.innerHTML = "vendre";
   showInventory.appendChild(newItem);
   newItem.appendChild(newItemBtn);
+  allSellBtn.push(newItemBtn)
   pushInventory(item);
   newItemBtn.addEventListener("click", () => {
-    console.log(item.id);
     sell(item);
   });
 }
@@ -279,12 +307,7 @@ function showMerch(cell) {
         allMerch.forEach((merch) => {
           if (availMerch == merch.name) {
             const merchDiv = document.createElement("div");
-            merchDiv.classList.add(
-              "flex",
-              "flex-col",
-              "items-center",
-              "justify-center"
-            );
+            merchDiv.classList.add("flex","flex-col","items-center","justify-center");
             const merchImg = document.createElement("img");
             merchImg.src = merch.image;
             merchImg.classList.add("w-32");

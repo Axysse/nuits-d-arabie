@@ -10,9 +10,9 @@
             "favoriteMerch" : "café",
             "variationValue" : [
                 {
-                    "café" : 10,
+                    "café" : 15,
                     "épices": 2,
-                    "soie": -5
+                    "soie": -18
                 }
             ]
         },
