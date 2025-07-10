@@ -7,7 +7,7 @@ const placeDiv = document.getElementById("placeDiv")
 const showInventory = document.getElementById("showInventory")
 const bttnBuy = document.querySelectorAll(".bttnBuy")
 const infoDiv = document.getElementById("infoDiv")
-let itemBtn = []
+const displayMerch = document.getElementById("displayMerch")
 
 var modal = document.getElementById("myModal");
 var modalVillageImage = document.getElementById("modalVillageImage");
@@ -19,6 +19,28 @@ let selectedCellId = null;
 let player = null;
 let currentCell = null;
 
+ let allMerch = []
+
+ async function fetchMerch(){
+        try {
+        const response = await fetch('./merch.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Données JSON brutes chargées :", data);
+        if (data && data.merchandises && Array.isArray(data.merchandises)) {
+            allMerch = data.merchandises;
+            console.log(allMerch)
+        } else {
+            console.error("Le format JSON n'est pas celui attendu ou 'merchandises' n'est pas un tableau.");
+            allMerch = [];
+        }
+    } catch (error) {
+        console.error("Erreur de chargement des marchandises :", error);
+        allMerch = [];
+    }
+}
 
 start.addEventListener("click", () => {
   newGame();
@@ -106,6 +128,7 @@ function eventClickCell(cell) {
       if(player.position === cell.id){
         placeDiv.classList.add("hidden")
         merchantDiv.classList.remove("hidden")
+        showMerch();
       }
   } else {
     message.innerHTML = ""
@@ -156,10 +179,10 @@ function newGame() {
 }
 
 function goTo(currentCellId, selectedCellId){
-  startCell = document.getElementById(currentCellId)
-  endCell = document.getElementById(selectedCellId)
+  let startCell = document.getElementById(currentCellId)
+  let endCell = document.getElementById(selectedCellId)
   console.log(endCell)
-  destinationCell = selectedCellId
+  let destinationCell = selectedCellId
   if(newgame !== true){
     const currentPlayerSprite = startCell.querySelector(".playerImg");
     currentPlayerSprite.remove()
@@ -177,18 +200,14 @@ function goTo(currentCellId, selectedCellId){
 
 function buy(item){
   let price
-    if(item.includes("coffee")){
-     price = 50
-  }
-  if(item.includes("spice")){
-     price = 75
-  }
-  player.money = player.money - price
+
+  player.money = player.money - item.basePrice
   console.log(player.money)
   const newItem = document.createElement("div")
-  newItem.classList.add("flex", "flex-col", "items-center")
+  newItem.setAttribute("name", item.name)
+  newItem.classList.add("flex", "flex-col", "items-center", "item")
   const newItemImg = document.createElement("img")
-  newItemImg.src = item
+  newItemImg.src = item.image
   newItemImg.classList.add("w-18", "mt-2")
   newItem.appendChild(newItemImg)
   const newItemBtn = document.createElement("button")
@@ -197,19 +216,15 @@ function buy(item){
   showInventory.appendChild(newItem)
   newItem.appendChild(newItemBtn)
   pushInventory(item)
-  itemBtn.push(newItemBtn)
-  console.log(itemBtn)
+  newItemBtn.addEventListener("click", () => {
+    console.log(item.id)
+    sell(item)
+  })
 }
 
 function pushInventory(item){
-  let itemName
+  let itemName = item.name
   let itemFound = false
-  if(item.includes("coffee")){
-     itemName = "coffee"
-  }
-  if(item.includes("spice")){
-     itemName = "spice"
-  }
 
   player.inventory.forEach(merch => {
     if(itemName === merch.name){
@@ -227,4 +242,65 @@ function pushInventory(item){
   }
 }
 
+function showMerch(){
+  displayMerch.innerHTML = ''
+  allMerch.forEach(merch => {
+    const merchDiv = document.createElement("div")
+    merchDiv.classList.add("flex", "flex-col", "items-center", "justify-center")
+    const merchImg = document.createElement("img")
+    merchImg.src = merch.image
+    merchImg.classList.add("w-32")
+    const merchName = document.createElement("p")
+    merchName.innerText = merch.name
+    const merchPrice = document.createElement("p")
+    merchPrice.innerText = merch.basePrice + "$"
+    const merchBuy = document.createElement("button")
+    merchBuy.innerHTML = "Acheter"
+    merchBuy.classList.add("p-2", "bg-orange-600")
+
+    merchDiv.appendChild(merchImg)
+    merchDiv.appendChild(merchName)
+    merchDiv.appendChild(merchPrice)
+    merchDiv.appendChild(merchBuy)
+    displayMerch.appendChild(merchDiv)
+
+    merchBuy.addEventListener("click", () => {
+        buy(merch)
+    })
+  });
+}
+
+function sell(item){
+  player.money += item.basePrice;
+  console.log(player.money)
+  
+  let itemsToSell = showInventory.querySelectorAll(`div[name="${item.name}"]`);
+  let itemSold = false; 
+
+  itemsToSell.forEach(itemToSell => {
+      if(itemToSell.getAttribute("name") === item.name && !itemSold){
+          itemToSell.remove();
+          itemSold = true; 
+      }
+  });
+
+  let itemFoundInInventory = false;
+  player.inventory.forEach((merch, index) => {
+    if (item.name === merch.name) {
+      merch.quantity -= 1; 
+      if (merch.quantity <= 0) {
+        player.inventory.splice(index, 1); 
+      }
+      itemFoundInInventory = true;
+      return; 
+    }
+  });
+
+  if (!itemFoundInInventory) {
+    console.warn("Y'a pas ça:", item.name);
+  }
+  console.log("Inventaire:", player.inventory);
+}
+
+fetchMerch();
 createGrid();

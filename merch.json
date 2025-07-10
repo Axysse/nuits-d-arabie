@@ -1,0 +1,18 @@
+{
+    "merchandises": [
+        {
+            "name": "café",
+            "id": "cafe",
+            "image": "../assets/img/coffee.png",
+            "description" : "Délicieux breuvage",
+            "basePrice" : 35
+        },
+        {
+            "name": "épices",
+            "id": "epices",
+            "image": "../assets/img/spice.png",
+            "description" : "Pour que la bouffe soir pas trop fade.",
+            "basePrice" : 75
+        }
+    ]
+}
