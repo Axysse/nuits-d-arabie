@@ -8,9 +8,8 @@ const showInventory = document.getElementById("showInventory");
 const bttnBuy = document.querySelectorAll(".bttnBuy");
 const infoDiv = document.getElementById("infoDiv");
 const displayMerch = document.getElementById("displayMerch");
-let pop = document.getElementById("pop")
-let favoriteMerch = document.getElementById("favoriteMerch")
-
+let pop = document.getElementById("pop");
+let favoriteMerch = document.getElementById("favoriteMerch");
 
 var modal = document.getElementById("myModal");
 var modalVillageImage = document.getElementById("modalVillageImage");
@@ -146,14 +145,14 @@ function placeCities() {
 function eventClickCell(cell) {
   if (cell.getAttribute("type") === "village") {
     message.innerHTML = "";
-    pop.textContent = ""; 
+    pop.textContent = "";
     favoriteMerch.textContent = "";
-    allCities.forEach(city => {
-      if(city.position == cell.id){
+    allCities.forEach((city) => {
+      if (city.position == cell.id) {
         const population = city.population;
         pop.textContent = population;
-        const favoriteMerchandise = city.favoriteMerch
-        favoriteMerch.textContent = favoriteMerchandise
+        const favoriteMerchandise = city.favoriteMerch;
+        favoriteMerch.textContent = favoriteMerchandise;
       }
     });
     const name = cell.dataset.villageName;
@@ -165,14 +164,14 @@ function eventClickCell(cell) {
     message.innerHTML = "Y'a foule ici!";
     merchantDiv.classList.add("hidden");
     placeDiv.classList.remove("hidden");
-        allSellBtn.forEach(btn => {
-        btn.classList.add("hidden")
-      });
+    allSellBtn.forEach((btn) => {
+      btn.classList.add("hidden");
+    });
     if (player.position === cell.id) {
       placeDiv.classList.add("hidden");
       merchantDiv.classList.remove("hidden");
-      allSellBtn.forEach(btn => {
-        btn.classList.remove("hidden")
+      allSellBtn.forEach((btn) => {
+        btn.classList.remove("hidden");
       });
       showMerch(cell);
     }
@@ -187,9 +186,9 @@ function eventClickCell(cell) {
     message.innerHTML = "Il fait bon ici!";
     merchantDiv.classList.add("hidden");
     placeDiv.classList.remove("hidden");
-        allSellBtn.forEach(btn => {
-        btn.classList.add("hidden")
-      });
+    allSellBtn.forEach((btn) => {
+      btn.classList.add("hidden");
+    });
   }
 
   closeButton.onclick = function () {
@@ -236,7 +235,7 @@ function goTo(currentCellId, selectedCellId) {
 
   if (newgame !== true) {
     const currentPlayerSprite = startCell.querySelector(".playerImg");
-    if (currentPlayerSprite) { 
+    if (currentPlayerSprite) {
       currentPlayerSprite.remove();
     }
     const playerSprite = document.createElement("img");
@@ -251,12 +250,12 @@ function goTo(currentCellId, selectedCellId) {
       placeName.textContent = name;
       modalVillageImage.src = imageSrc;
       message.innerHTML = "Y'a foule ici!";
-      merchantDiv.classList.remove("hidden"); 
-      placeDiv.classList.add("hidden"); 
+      merchantDiv.classList.remove("hidden");
+      placeDiv.classList.add("hidden");
       allSellBtn.forEach((btn) => {
         btn.classList.remove("hidden");
       });
-      showMerch(endCell); 
+      showMerch(endCell);
     } else {
       merchantDiv.classList.add("hidden");
       placeDiv.classList.remove("hidden");
@@ -269,9 +268,9 @@ function goTo(currentCellId, selectedCellId) {
   }
 }
 
-function buy(item) {
+function buy(item, adjustedPrice) {
   let price;
-  player.money = player.money - item.basePrice;
+  player.money = player.money - adjustedPrice;
   console.log(player.money);
   const newItem = document.createElement("div");
   newItem.setAttribute("name", item.name);
@@ -285,7 +284,7 @@ function buy(item) {
   newItemBtn.innerHTML = "vendre";
   showInventory.appendChild(newItem);
   newItem.appendChild(newItemBtn);
-  allSellBtn.push(newItemBtn)
+  allSellBtn.push(newItemBtn);
   pushInventory(item);
   newItemBtn.addEventListener("click", () => {
     sell(item);
@@ -320,7 +319,12 @@ function showMerch(cell) {
         allMerch.forEach((merch) => {
           if (availMerch == merch.name) {
             const merchDiv = document.createElement("div");
-            merchDiv.classList.add("flex","flex-col","items-center","justify-center");
+            merchDiv.classList.add(
+              "flex",
+              "flex-col",
+              "items-center",
+              "justify-center"
+            );
             const merchImg = document.createElement("img");
             merchImg.src = merch.image;
             merchImg.classList.add("w-32");
@@ -332,7 +336,7 @@ function showMerch(cell) {
             if (city.variationValue && city.variationValue.length > 0) {
               const variation = city.variationValue[0][merch.name];
               if (variation !== undefined) {
-                adjustedPrice += variation;
+                adjustedPrice += variation + (5 * city.population) / 100;
               }
             }
             merchPrice.innerText = adjustedPrice + "$";
@@ -348,7 +352,7 @@ function showMerch(cell) {
             displayMerch.appendChild(merchDiv);
 
             merchBuy.addEventListener("click", () => {
-              buy(merch);
+              buy(merch, adjustedPrice);
             });
           }
         });
@@ -358,7 +362,19 @@ function showMerch(cell) {
 }
 
 function sell(item) {
-  player.money += item.basePrice;
+  let adjustedPrice = item.basePrice;
+  allCities.forEach((city) => {
+    if (city.position == player.position) {
+      if (city.variationValue && city.variationValue.length > 0) {
+        const variation = city.variationValue[0][item.name];
+        if (variation !== undefined) {
+          adjustedPrice += variation + (5 * city.population) / 100;
+        }
+      }
+    }
+  });
+
+  player.money += adjustedPrice;
   console.log(player.money);
 
   let itemsToSell = showInventory.querySelectorAll(`div[name="${item.name}"]`);
