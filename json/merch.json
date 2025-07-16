@@ -33,9 +33,9 @@
             "biome" : "ocean"
         },
         {
-            "name": "encens",
-            "id": "encens",
-            "image": "../assets/img/encens.png",
+            "name": "roseaux",
+            "id": "roseaux",
+            "image": "../assets/img/roseaux.png",
             "description" : "Ca sent bon",
             "basePrice" : 5,
             "biome" : "marais"

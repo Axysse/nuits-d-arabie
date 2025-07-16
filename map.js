@@ -381,6 +381,10 @@ function eventClickCell(cell) {
       const imageSrc = "./assets/img/foret.png";
       modalVillageImage.src = imageSrc;
       modalVillageImage.classList.add("w-72");
+    } else if (name == "marais") {
+      const imageSrc = "./assets/img/marais.png";
+      modalVillageImage.src = imageSrc;
+      modalVillageImage.classList.add("w-72");
     }
     placeName.textContent = name;
 

@@ -11,7 +11,7 @@
                     "épices": 2,
                     "soie": -10,
                     "hareng": 2,
-                    "encens": 5
+                    "roseaux": 5
                 }
             ]
         },
@@ -26,7 +26,7 @@
                     "épices": 2,
                     "soie": 8,
                     "hareng": 3,
-                    "encens": -45
+                    "roseaux": -45
                 }
             ]
         },
@@ -41,7 +41,7 @@
                     "épices": 7,
                     "soie": -3,
                     "hareng": 3,
-                    "encens": 5
+                    "roseaux": 5
                 }
             ]
         },
@@ -56,7 +56,7 @@
                     "épices": 150,
                     "soie": 86,
                     "hareng": -10,
-                    "encens": 196
+                    "roseaux": 196
                 }
             ]
         }
