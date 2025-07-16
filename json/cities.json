@@ -10,7 +10,8 @@
                     "café" : 10,
                     "épices": 2,
                     "soie": -10,
-                    "hareng": 2
+                    "hareng": 2,
+                    "encens": 5
                 }
             ]
         },
@@ -24,7 +25,8 @@
                     "café" : -5,
                     "épices": 2,
                     "soie": 8,
-                    "hareng": 3
+                    "hareng": 3,
+                    "encens": -45
                 }
             ]
         },
@@ -38,7 +40,8 @@
                     "café" : 1,
                     "épices": 7,
                     "soie": -3,
-                    "hareng": 3
+                    "hareng": 3,
+                    "encens": 5
                 }
             ]
         },
@@ -52,7 +55,8 @@
                     "café" : 102,
                     "épices": 150,
                     "soie": 86,
-                    "hareng": -10
+                    "hareng": -10,
+                    "encens": 196
                 }
             ]
         }

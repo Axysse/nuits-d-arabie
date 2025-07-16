@@ -30,15 +30,8 @@ let allBiomes = [
   { id: 2, name: "foret", color: "biome_foret" },
   { id: 3, name: "ocean", color: "biome_ocean" },
   { id: 4, name: "montagne", color: "biome_montagne" },
-  { id: 4, name: "montagne", color: "biome_montagne" },
   { id: 6, name: "desert", color: "biome_desert" },
-  { id: 7, name: "desert", color: "biome_desert" },
-  { id: 7, name: "desert", color: "biome_desert" },
-  { id: 7, name: "desert", color: "biome_desert" },
-  { id: 7, name: "desert", color: "biome_desert" },
-  { id: 7, name: "desert", color: "biome_desert" },
-  { id: 7, name: "desert", color: "biome_desert" },
-  { id: 7, name: "desert", color: "biome_desert" },
+  { id: 7, name: "marais", color: "biome_marais" },
 ];
 
 async function fetchMerch() {
@@ -134,8 +127,21 @@ async function createGrid() {
   let cellIdCounter = 0;
   let column = 0;
   let line = 0;
+  let chosenBiome
   for (let i = 0; i <= 143; i++) {
-    let chosenBiome = randomBiome(allBiomes);
+    if( i >= 0 && i <= 6 || i >= 16 && i <= 23 || i >= 32 && i<= 39 || i >= 48 && i<= 53 || i >= 64 && i<= 68 || i >= 80 && i<= 85 || i >= 96 && i<= 102 || i >= 112 && i<= 120 || i >= 128 && i<= 135 ){
+      chosenBiome = allBiomes[2]
+    }else if(i >= 10 && i <= 16 ||i >= 28 && i <= 31 || i >= 45 && i <= 46  ){
+      chosenBiome = allBiomes[3]
+    }else if(i == 110 || i >= 123 && i <= 127 || i >= 140 && i <= 143 ){
+      chosenBiome = allBiomes[1]
+    }else if(i >= 54 && i <= 57 || i >= 69 && i <= 73|| i >= 86 && i <= 88|| i >= 103 && i <= 104){
+      chosenBiome = allBiomes[0]
+    }else if(i == 89||i >= 105 && i <= 107 ||i >= 121 && i <= 122 || i >= 136 && i <= 139){
+      chosenBiome = allBiomes[5]
+    } else {
+      chosenBiome = allBiomes[4]
+    }
     let newCell = document.createElement("div");
     newCell.classList.add("cell", chosenBiome.color);
     newCell.setAttribute("type", chosenBiome.name);
