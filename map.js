@@ -10,7 +10,7 @@ const infoDiv = document.getElementById("infoDiv");
 const displayMerch = document.getElementById("displayMerch");
 let pop = document.getElementById("pop");
 let favoriteMerch = document.getElementById("favoriteMerch");
-const showPlayerMoney = document.getElementById("showPlayerMoney")
+const showPlayerMoney = document.getElementById("showPlayerMoney");
 
 var modal = document.getElementById("myModal");
 var modalVillageImage = document.getElementById("modalVillageImage");
@@ -25,6 +25,17 @@ let currentCell = null;
 let allMerch = [];
 let allCells = [];
 let allSellBtn = [];
+let allBiomes = [
+  { id: 1, name: "prairie", color: "biome_prairie" },
+  { id: 2, name: "foret", color: "biome_foret" },
+  { id: 3, name: "ocean", color: "biome_ocean" },
+  { id: 4, name: "montagne", color: "biome_montagne" },
+  { id: 5, name: "desert", color: "biome_desert" },
+  { id: 6, name: "desert", color: "biome_desert" },
+  { id: 7, name: "desert", color: "biome_desert" },
+  { id: 7, name: "desert", color: "biome_desert" },
+  { id: 7, name: "desert", color: "biome_desert" },
+];
 
 async function fetchMerch() {
   try {
@@ -107,12 +118,31 @@ class Item {
   }
 }
 
+class Town {
+  constructor(name, position) {
+    this.name = name;
+    this.position = position;
+    availbaleMerchandises = [];
+  }
+}
+
 async function createGrid() {
   let cellIdCounter = 0;
+  let column = 0;
+  let line = 0;
   for (let i = 0; i <= 143; i++) {
+    let chosenBiome = randomBiome(allBiomes);
     let newCell = document.createElement("div");
-    newCell.classList.add("cell");
+    newCell.classList.add("cell", chosenBiome.color);
+    newCell.setAttribute("type", chosenBiome.name);
     newCell.id = cellIdCounter;
+    newCell.setAttribute("x", column);
+    newCell.setAttribute("y", line);
+    allMerch.forEach((merch) => {
+      if (newCell.getAttribute("type") == merch.biome) {
+        newCell.setAttribute("produce", merch.name);
+      }
+    });
     display.appendChild(newCell);
     newCell.addEventListener("click", () => {
       if (newgame == true) {
@@ -123,9 +153,19 @@ async function createGrid() {
     });
     allCells.push(newCell);
     cellIdCounter++;
+    column++;
+    if (column == 16) {
+      column = 0;
+      line++;
+    }
   }
   console.log(allCells);
   placeCities();
+}
+
+function randomBiome(allBiomes) {
+  let biomeIndex = Math.floor(Math.random() * allBiomes.length);
+  return allBiomes[biomeIndex];
 }
 
 function placeCities() {
@@ -141,6 +181,137 @@ function placeCities() {
       }
     });
   });
+}
+
+function getAdjacentCells(cellId) {
+  let casesAdjacentes = [];
+  let x = null;
+  let y = null;
+  let validMerch = [];
+
+  allCells.forEach((cell) => {
+    if (cellId == cell.id) {
+      x = parseInt(cell.getAttribute("x"), 10);
+      y = parseInt(cell.getAttribute("y"), 10);
+    }
+  });
+
+  if (y == 0) {
+    let up = null;
+    casesAdjacentes.push(up);
+  } else {
+    let up = { x: x, y: y - 1 };
+    allCells.forEach((cell) => {
+      if (cell.getAttribute("x") == x && cell.getAttribute("y") == y - 1) {
+        casesAdjacentes.push(cell.id);
+      }
+    });
+  }
+
+  if (y == 0 || x == 15) {
+    let up_right = null;
+    casesAdjacentes.push(up_right);
+  } else {
+    let up_right = { x: x + 1, y: y - 1 };
+    allCells.forEach((cell) => {
+      if (cell.getAttribute("x") == x + 1 && cell.getAttribute("y") == y - 1) {
+        casesAdjacentes.push(cell.id);
+      }
+    });
+  }
+
+  if (y == 0 || x == 0) {
+    let up_left = null;
+    casesAdjacentes.push(up_left);
+  } else {
+    let up_left = { x: x - 1, y: y - 1 };
+    allCells.forEach((cell) => {
+      if (cell.getAttribute("x") == x - 1 && cell.getAttribute("y") == y - 1) {
+        casesAdjacentes.push(cell.id);
+      }
+    });
+  }
+
+  if (x == 15) {
+    let right = null;
+    casesAdjacentes.push(right);
+  } else {
+    let right = { x: x + 1, y: y };
+    allCells.forEach((cell) => {
+      if (cell.getAttribute("x") == x + 1 && cell.getAttribute("y") == y) {
+        casesAdjacentes.push(cell.id);
+      }
+    });
+  }
+
+  if (x == 0) {
+    let left = null;
+    casesAdjacentes.push(left);
+  } else {
+    let left = { x: x - 1, y: y };
+    allCells.forEach((cell) => {
+      if (cell.getAttribute("x") == x - 1 && cell.getAttribute("y") == y) {
+        casesAdjacentes.push(cell.id);
+      }
+    });
+  }
+
+  if (y == 8) {
+    let bottom = null;
+    casesAdjacentes.push(bottom);
+  } else {
+    let bottom = { x: x, y: y + 1 };
+    allCells.forEach((cell) => {
+      if (cell.getAttribute("x") == x && cell.getAttribute("y") == y + 1) {
+        casesAdjacentes.push(cell.id);
+      }
+    });
+  }
+
+  if (x == 15 || y == 8) {
+    let bottom_right = null;
+    casesAdjacentes.push(bottom_right);
+  } else {
+    let bottom_right = { x: x + 1, y: y + 1 };
+    allCells.forEach((cell) => {
+      if (cell.getAttribute("x") == x + 1 && cell.getAttribute("y") == y + 1) {
+        casesAdjacentes.push(cell.id);
+      }
+    });
+  }
+
+  if (x == 0 || y == 8) {
+    let bottom_left = null;
+    casesAdjacentes.push(bottom_left);
+  } else {
+    let bottom_left = { x: x - 1, y: y + 1 };
+    allCells.forEach((cell) => {
+      if (cell.getAttribute("x") == x - 1 && cell.getAttribute("y") == y + 1) {
+        casesAdjacentes.push(cell.id);
+      }
+    });
+  }
+  console.log("case cliquée : " + x, y);
+  console.log("cases autour : ", casesAdjacentes);
+
+  casesAdjacentes.forEach(element => {
+    if (element === null) return;
+    allCells.forEach(cell => {
+      if(element == cell.id){
+        allMerch.forEach(merch=> {
+          if(cell.getAttribute("type") == merch.biome){
+            if (!validMerch.includes(merch.name)) {
+            validMerch.push(merch.name);
+          }
+          }
+        });
+      }
+    });
+  });
+
+  // return casesAdjacentes;
+  console.log(validMerch)
+  return validMerch;
 }
 
 function eventClickCell(cell) {
@@ -174,14 +345,35 @@ function eventClickCell(cell) {
       allSellBtn.forEach((btn) => {
         btn.classList.remove("hidden");
       });
-      showMerch(cell);
+      getAdjacentCells(cell.id);
+      showMerch(selectedCellId);
     }
   } else {
     message.innerHTML = "";
-    const name = "Désert";
-    const imageSrc = "./assets/img/desertPlace.jpg";
+    const name = cell.getAttribute("type");
+    if (name == "desert") {
+      const imageSrc = "./assets/img/desert.png";
+      modalVillageImage.src = imageSrc;
+      modalVillageImage.classList.add("w-72");
+    } else if (name == "ocean") {
+      const imageSrc = "./assets/img/ocean.png";
+      modalVillageImage.src = imageSrc;
+      modalVillageImage.classList.add("w-72");
+    } else if (name == "montagne") {
+      const imageSrc = "./assets/img/montagne.png";
+      modalVillageImage.src = imageSrc;
+      modalVillageImage.classList.add("w-72");
+    } else if (name == "prairie") {
+      const imageSrc = "./assets/img/prairie.png";
+      modalVillageImage.src = imageSrc;
+      modalVillageImage.classList.add("w-72");
+    } else if (name == "foret") {
+      const imageSrc = "./assets/img/foret.png";
+      modalVillageImage.src = imageSrc;
+      modalVillageImage.classList.add("w-72");
+    }
     placeName.textContent = name;
-    modalVillageImage.src = imageSrc;
+
     modal.style.display = "flex";
     selectedCellId = cell.id;
     message.innerHTML = "Il fait bon ici!";
@@ -190,6 +382,7 @@ function eventClickCell(cell) {
     allSellBtn.forEach((btn) => {
       btn.classList.add("hidden");
     });
+    getAdjacentCells(cell.id);
   }
 
   closeButton.onclick = function () {
@@ -214,7 +407,7 @@ function firstPlacement(cell) {
     cell.appendChild(playerSprite);
     message.innerHTML = "";
     currentCell = cell.id;
-    showPlayerMoney.innerText = player.money
+    showPlayerMoney.innerText = player.money;
   }
   newgame = false;
 }
@@ -288,7 +481,7 @@ function buy(item, adjustedPrice) {
   newItem.appendChild(newItemBtn);
   allSellBtn.push(newItemBtn);
   pushInventory(item);
-  showPlayerMoney.innerText = player.money
+  showPlayerMoney.innerText = player.money.toFixed(2);
   newItemBtn.addEventListener("click", () => {
     sell(item);
   });
@@ -304,7 +497,6 @@ function pushInventory(item) {
       itemFound = true;
     }
   });
-
   if (itemFound) {
     console.log(player.inventory);
   } else {
@@ -316,52 +508,52 @@ function pushInventory(item) {
 
 function showMerch(cell) {
   displayMerch.innerHTML = "";
-  allCities.forEach((city) => {
-    if (cell.id == city.position) {
-      city.availableMerch.forEach((availMerch) => {
-        allMerch.forEach((merch) => {
-          if (availMerch == merch.name) {
-            const merchDiv = document.createElement("div");
-            merchDiv.classList.add(
-              "flex",
-              "flex-col",
-              "items-center",
-              "justify-center"
-            );
-            const merchImg = document.createElement("img");
-            merchImg.src = merch.image;
-            merchImg.classList.add("w-32");
-            const merchName = document.createElement("p");
-            merchName.innerText = merch.name;
+  const currentCity = allCities.find(city => city.position == cell.id);
+  if (currentCity) {
+    const validMerchNames = getAdjacentCells(cell.id); 
+    validMerchNames.forEach((merchName) => { 
+      const merch = allMerch.find(m => m.name === merchName); 
+      if (merch) {
+        const merchDiv = document.createElement("div");
+        merchDiv.classList.add(
+          "flex",
+          "flex-col",
+          "items-center",
+          "justify-center"
+        );
+        const merchImg = document.createElement("img");
+        merchImg.src = merch.image;
+        merchImg.classList.add("w-32");
+        const merchNameElement = document.createElement("p"); 
+        merchNameElement.innerText = merch.name;
 
-            const merchPrice = document.createElement("p");
-            let adjustedPrice = merch.basePrice;
-            if (city.variationValue && city.variationValue.length > 0) {
-              const variation = city.variationValue[0][merch.name];
-              if (variation !== undefined) {
-                adjustedPrice += variation + (5 * city.population) / 100;
-              }
-            }
-            merchPrice.innerText = adjustedPrice + "$";
+        const merchPrice = document.createElement("p");
+        let adjustedPrice = merch.basePrice;
 
-            const merchBuy = document.createElement("button");
-            merchBuy.innerHTML = "Acheter";
-            merchBuy.classList.add("p-2", "bg-orange-600");
-
-            merchDiv.appendChild(merchImg);
-            merchDiv.appendChild(merchName);
-            merchDiv.appendChild(merchPrice);
-            merchDiv.appendChild(merchBuy);
-            displayMerch.appendChild(merchDiv);
-
-            merchBuy.addEventListener("click", () => {
-              buy(merch, adjustedPrice);
-            });
+        if (currentCity.variationValue && currentCity.variationValue.length > 0) {
+          const variation = currentCity.variationValue[0][merch.name];
+          if (variation !== undefined) {
+            adjustedPrice += variation + (5 * currentCity.population) / 100;
           }
+        }
+        merchPrice.innerText = adjustedPrice.toFixed(2) + "$"; 
+
+        const merchBuy = document.createElement("button");
+        merchBuy.innerHTML = "Acheter";
+        merchBuy.classList.add("p-2", "bg-orange-600");
+
+        merchDiv.appendChild(merchImg);
+        merchDiv.appendChild(merchNameElement);
+        merchDiv.appendChild(merchPrice);
+        merchDiv.appendChild(merchBuy);
+        displayMerch.appendChild(merchDiv);
+
+        merchBuy.addEventListener("click", () => {
+          buy(merch, adjustedPrice);
         });
-      });
-    }
-  });
+      }
+    });
+  }
 }
 
 function sell(item) {
@@ -377,7 +569,7 @@ function sell(item) {
     }
   });
   player.money += adjustedPrice;
-  showPlayerMoney.innerText = player.money
+  showPlayerMoney.innerText = player.money.toFixed(2);
   console.log(player.money);
   let itemsToSell = showInventory.querySelectorAll(`div[name="${item.name}"]`);
   let itemSold = false;
@@ -398,7 +590,6 @@ function sell(item) {
       itemFoundInInventory = true;
       return;
     }
-    
   });
 
   if (!itemFoundInInventory) {
@@ -411,4 +602,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   await fetchCities();
   await fetchMerch();
   await createGrid();
+  let chosenBiome = await randomBiome(allBiomes);
+  console.log(chosenBiome);
 });

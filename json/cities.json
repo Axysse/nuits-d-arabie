@@ -4,9 +4,6 @@
             "name" : "Izmir",
             "position" : 27,
             "population": 3248,
-            "availableMerch" : [
-                "épices", "soie"
-            ],
             "favoriteMerch" : "café",
             "variationValue" : [
                 {
@@ -21,9 +18,6 @@
             "name" : "Adana",
             "position" : 108,
             "population": 3104,
-            "availableMerch" : [
-                "épices", "café"
-            ],
             "favoriteMerch" : "soie",
             "variationValue" : [
                 {
@@ -38,9 +32,6 @@
             "name" : "karakoroum",
             "position" : 72,
             "population": 2157,
-            "availableMerch" : [
-                "soie", "café"
-            ],
             "favoriteMerch" : "épices",
             "variationValue" : [
                 {
@@ -55,9 +46,6 @@
             "name" : "Maara",
             "position" : 7,
             "population": 976,
-            "availableMerch" : [
-                "soie", "café", "hareng"
-            ],
             "favoriteMerch" : "épices",
             "variationValue" : [
                 {

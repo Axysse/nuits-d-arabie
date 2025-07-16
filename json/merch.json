@@ -5,29 +5,32 @@
             "id": "cafe",
             "image": "../assets/img/coffee.png",
             "description" : "Délicieux breuvage",
-            "basePrice" : 10
+            "basePrice" : 10,
+            "biome" : "prairie"
         },
         {
             "name": "épices",
             "id": "epices",
             "image": "../assets/img/spice.png",
             "description" : "Pour que la bouffe soit pas trop fade.",
-            "basePrice" : 15
+            "basePrice" : 15,
+            "biome" : "desert"
         },
         {
             "name": "soie",
             "id": "soie",
             "image": "../assets/img/silk.png",
             "description" : "C'est tout doux.",
-            "basePrice" : 25
-        }
-        ,
+            "basePrice" : 25,
+            "biome" : "foret"
+        },
         {
             "name": "hareng",
             "id": "hareng",
             "image": "../assets/img/hareng.png",
             "description" : "Ca pue",
-            "basePrice" : -5
+            "basePrice" : -5,
+            "biome" : "ocean"
         }
     ]
 }

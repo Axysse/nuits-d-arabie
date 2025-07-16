@@ -1,11 +1,27 @@
 .cell {
     height: 67px;
     width: 67px;
-    background-color: rgba(156, 147, 147, 0);
+    /* background-color: rgba(156, 147, 147, 0); */
     /* border: solid;
     border-color: black; 
     border-width: 1px;  */
     position: relative;
+}
+
+.biome_ocean{
+    background-color: #2176e3;
+}
+.biome_montagne{
+    background-color: #c7c8c7;
+}
+.biome_foret{
+    background-color: #26902a;
+}
+.biome_prairie{
+    background-color: #b6ea3e;
+}
+.biome_desert{
+    background-color: #eacd3e;
 }
 
 .cell:hover{
@@ -13,7 +29,7 @@
 }
 
 #display{
-    background-image: url("./img/desert.png");
+    /* background-image: url("./img/desert-wall.png"); */
 }
 
 #message{
