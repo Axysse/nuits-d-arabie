@@ -30,8 +30,12 @@ let allBiomes = [
   { id: 2, name: "foret", color: "biome_foret" },
   { id: 3, name: "ocean", color: "biome_ocean" },
   { id: 4, name: "montagne", color: "biome_montagne" },
-  { id: 5, name: "desert", color: "biome_desert" },
+  { id: 4, name: "montagne", color: "biome_montagne" },
   { id: 6, name: "desert", color: "biome_desert" },
+  { id: 7, name: "desert", color: "biome_desert" },
+  { id: 7, name: "desert", color: "biome_desert" },
+  { id: 7, name: "desert", color: "biome_desert" },
+  { id: 7, name: "desert", color: "biome_desert" },
   { id: 7, name: "desert", color: "biome_desert" },
   { id: 7, name: "desert", color: "biome_desert" },
   { id: 7, name: "desert", color: "biome_desert" },
@@ -294,15 +298,15 @@ function getAdjacentCells(cellId) {
   console.log("case cliquée : " + x, y);
   console.log("cases autour : ", casesAdjacentes);
 
-  casesAdjacentes.forEach(element => {
+  casesAdjacentes.forEach((element) => {
     if (element === null) return;
-    allCells.forEach(cell => {
-      if(element == cell.id){
-        allMerch.forEach(merch=> {
-          if(cell.getAttribute("type") == merch.biome){
+    allCells.forEach((cell) => {
+      if (element == cell.id) {
+        allMerch.forEach((merch) => {
+          if (cell.getAttribute("type") == merch.biome) {
             if (!validMerch.includes(merch.name)) {
-            validMerch.push(merch.name);
-          }
+              validMerch.push(merch.name);
+            }
           }
         });
       }
@@ -310,7 +314,7 @@ function getAdjacentCells(cellId) {
   });
 
   // return casesAdjacentes;
-  console.log(validMerch)
+  console.log(validMerch);
   return validMerch;
 }
 
@@ -508,11 +512,11 @@ function pushInventory(item) {
 
 function showMerch(cell) {
   displayMerch.innerHTML = "";
-  const currentCity = allCities.find(city => city.position == cell.id);
+  const currentCity = allCities.find((city) => city.position == cell.id);
   if (currentCity) {
-    const validMerchNames = getAdjacentCells(cell.id); 
-    validMerchNames.forEach((merchName) => { 
-      const merch = allMerch.find(m => m.name === merchName); 
+    const validMerchNames = getAdjacentCells(cell.id);
+    validMerchNames.forEach((merchName) => {
+      const merch = allMerch.find((m) => m.name === merchName);
       if (merch) {
         const merchDiv = document.createElement("div");
         merchDiv.classList.add(
@@ -524,19 +528,22 @@ function showMerch(cell) {
         const merchImg = document.createElement("img");
         merchImg.src = merch.image;
         merchImg.classList.add("w-32");
-        const merchNameElement = document.createElement("p"); 
+        const merchNameElement = document.createElement("p");
         merchNameElement.innerText = merch.name;
 
         const merchPrice = document.createElement("p");
         let adjustedPrice = merch.basePrice;
 
-        if (currentCity.variationValue && currentCity.variationValue.length > 0) {
+        if (
+          currentCity.variationValue &&
+          currentCity.variationValue.length > 0
+        ) {
           const variation = currentCity.variationValue[0][merch.name];
           if (variation !== undefined) {
             adjustedPrice += variation + (5 * currentCity.population) / 100;
           }
         }
-        merchPrice.innerText = adjustedPrice.toFixed(2) + "$"; 
+        merchPrice.innerText = adjustedPrice.toFixed(2) + "$";
 
         const merchBuy = document.createElement("button");
         merchBuy.innerHTML = "Acheter";

@@ -97,3 +97,12 @@
     from {top: -300px; opacity: 0}
     to {top: 0; opacity: 1}
 }
+
+.playerImg {
+  /* Vos styles existants */
+  position: absolute; /* Important pour le déplacement */
+  top: 0;
+  left: 0; /* Ajoutez left: 0; */
+  transition: transform 0.5s ease-in-out; /* Ajoute une transition douce */
+  /* ou transition: top 0.5s ease-in-out, left 0.5s ease-in-out; */
+}
