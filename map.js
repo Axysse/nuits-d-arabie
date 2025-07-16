@@ -133,7 +133,7 @@ async function createGrid() {
       chosenBiome = allBiomes[2]
     }else if(i >= 10 && i <= 16 ||i >= 28 && i <= 31 || i >= 45 && i <= 46  ){
       chosenBiome = allBiomes[3]
-    }else if(i == 110 || i >= 123 && i <= 127 || i >= 140 && i <= 143 ){
+    }else if( i >= 123 && i <= 125 || i >= 140 && i <= 142 ){
       chosenBiome = allBiomes[1]
     }else if(i >= 54 && i <= 57 || i >= 69 && i <= 73|| i >= 86 && i <= 88|| i >= 103 && i <= 104){
       chosenBiome = allBiomes[0]
