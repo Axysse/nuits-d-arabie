@@ -31,14 +31,9 @@
     background-color: rgba(85, 80, 80, 0.2);
 }
 
-#display{
-    /* background-image: url("./img/desert-wall.png"); */
-}
-
 #message{
     background-image: url("./img/carvan.png");
-    filter: brightness(50%)
-    
+    filter: brightness(50%);
 }
 
 .modal {
@@ -101,3 +96,42 @@
     to {top: 0; opacity: 1}
 }
 
+.playerImg {
+  position: absolute; /* Assurez-vous que le positionnement est absolu */
+  top: 0;
+  left: 0; /* Ajoutez un 'left' initial si ce n'est pas déjà fait */
+  transition: top 0.5s ease-in-out, left 0.5s ease-in-out; /* Anime les changements de 'top' et 'left' sur 0.5 secondes */
+  /* Ou pour une meilleure performance, utilisez transform */
+  /* transition: transform 0.5s ease-in-out; */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Fond semi-transparent */
+  display: flex; /* Utilise flexbox pour centrer le contenu */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Assure que la modale est au-dessus du reste du contenu */
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  position: relative; /* Pour positionner des éléments à l'intérieur si besoin */
+}
+
+.small-modal {
+  max-width: 350px; /* Plus petit pour la notification */
+}
+
+
+.hidden {
+  display: none !important; /* Force la disparition */
+}

@@ -1,0 +1,22 @@
+{
+    "persons": [
+        {
+            "name": "Salah ad-Din Yusuf ibn Ayyub",
+            "code": "saladin",
+            "img": "../assets/img/saladin.png",
+            "origin": "Izmir"
+        },
+        {
+            "name": "Raoul",
+            "code": "raoul",
+            "img": "../assets/img/raoul.png",
+            "origin": "Adana"
+        },
+        {
+            "name": "Alejandro de la Vega",
+            "code": "alejandro",
+            "img": "../assets/img/alejandro.png",
+            "origin": "Maara"
+        }
+    ]
+}

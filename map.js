@@ -8,9 +8,12 @@ const showInventory = document.getElementById("showInventory");
 const bttnBuy = document.querySelectorAll(".bttnBuy");
 const infoDiv = document.getElementById("infoDiv");
 const displayMerch = document.getElementById("displayMerch");
+const peopleDiv = document.getElementById("peopleDiv");
+const displayPeople = document.getElementById("displayPeople");
 let pop = document.getElementById("pop");
 let favoriteMerch = document.getElementById("favoriteMerch");
 const showPlayerMoney = document.getElementById("showPlayerMoney");
+const crewDiv = document.getElementById("crew");
 
 var modal = document.getElementById("myModal");
 var modalVillageImage = document.getElementById("modalVillageImage");
@@ -82,6 +85,30 @@ async function fetchCities() {
   }
 }
 
+let allPeople = [];
+async function fetchPeople() {
+  try {
+    const response = await fetch("./json/persons.json");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    console.log("Données JSON brutes chargées :", data);
+    if (data && data.persons && Array.isArray(data.persons)) {
+      allPeople = data.persons;
+      console.log(allPeople);
+    } else {
+      console.error(
+        "Le format JSON n'est pas celui attendu ou 'cities' n'est pas un tableau."
+      );
+      allPeople = [];
+    }
+  } catch (error) {
+    console.error("Erreur de chargement des villes :", error);
+    allPeople = [];
+  }
+}
+
 start.addEventListener("click", () => {
   newGame();
 });
@@ -127,20 +154,44 @@ async function createGrid() {
   let cellIdCounter = 0;
   let column = 0;
   let line = 0;
-  let chosenBiome
+  let chosenBiome;
   for (let i = 0; i <= 143; i++) {
-    if( i >= 0 && i <= 6 || i >= 16 && i <= 23 || i >= 32 && i<= 39 || i >= 48 && i<= 53 || i >= 64 && i<= 68 || i >= 80 && i<= 85 || i >= 96 && i<= 102 || i >= 112 && i<= 120 || i >= 128 && i<= 135 ){
-      chosenBiome = allBiomes[2]
-    }else if(i >= 10 && i <= 16 ||i >= 28 && i <= 31 || i >= 45 && i <= 46  ){
-      chosenBiome = allBiomes[3]
-    }else if( i >= 123 && i <= 125 || i >= 140 && i <= 142 ){
-      chosenBiome = allBiomes[1]
-    }else if(i >= 54 && i <= 57 || i >= 69 && i <= 73|| i >= 86 && i <= 88|| i >= 103 && i <= 104){
-      chosenBiome = allBiomes[0]
-    }else if(i == 89||i >= 105 && i <= 107 ||i >= 121 && i <= 122 || i >= 136 && i <= 139){
-      chosenBiome = allBiomes[5]
+    if (
+      (i >= 0 && i <= 6) ||
+      (i >= 16 && i <= 23) ||
+      (i >= 32 && i <= 39) ||
+      (i >= 48 && i <= 53) ||
+      (i >= 64 && i <= 68) ||
+      (i >= 80 && i <= 85) ||
+      (i >= 96 && i <= 102) ||
+      (i >= 112 && i <= 120) ||
+      (i >= 128 && i <= 135)
+    ) {
+      chosenBiome = allBiomes[2];
+    } else if (
+      (i >= 10 && i <= 16) ||
+      (i >= 28 && i <= 31) ||
+      (i >= 45 && i <= 46)
+    ) {
+      chosenBiome = allBiomes[3];
+    } else if ((i >= 123 && i <= 125) || (i >= 140 && i <= 142)) {
+      chosenBiome = allBiomes[1];
+    } else if (
+      (i >= 54 && i <= 57) ||
+      (i >= 69 && i <= 73) ||
+      (i >= 86 && i <= 88) ||
+      (i >= 103 && i <= 104)
+    ) {
+      chosenBiome = allBiomes[0];
+    } else if (
+      i == 89 ||
+      (i >= 105 && i <= 107) ||
+      (i >= 121 && i <= 122) ||
+      (i >= 136 && i <= 139)
+    ) {
+      chosenBiome = allBiomes[5];
     } else {
-      chosenBiome = allBiomes[4]
+      chosenBiome = allBiomes[4];
     }
     let newCell = document.createElement("div");
     newCell.classList.add("cell", chosenBiome.color);
@@ -345,6 +396,7 @@ function eventClickCell(cell) {
     selectedCellId = cell.id;
     message.innerHTML = "Y'a foule ici!";
     merchantDiv.classList.add("hidden");
+    peopleDiv.classList.add("hidden");
     placeDiv.classList.remove("hidden");
     allSellBtn.forEach((btn) => {
       btn.classList.add("hidden");
@@ -352,6 +404,7 @@ function eventClickCell(cell) {
     if (player.position === cell.id) {
       placeDiv.classList.add("hidden");
       merchantDiv.classList.remove("hidden");
+      peopleDiv.classList.remove("hidden");
       allSellBtn.forEach((btn) => {
         btn.classList.remove("hidden");
       });
@@ -392,6 +445,7 @@ function eventClickCell(cell) {
     selectedCellId = cell.id;
     message.innerHTML = "Il fait bon ici!";
     merchantDiv.classList.add("hidden");
+    peopleDiv.classList.add("hidden");
     placeDiv.classList.remove("hidden");
     allSellBtn.forEach((btn) => {
       btn.classList.add("hidden");
@@ -453,6 +507,16 @@ function goTo(currentCellId, selectedCellId) {
     endCell.appendChild(playerSprite);
 
     player.position = destinationCell;
+
+    const moveModal = document.getElementById("moveNotificationModal");
+    const moveMessage = document.getElementById("moveMessage");
+    if (moveModal && moveMessage) {
+      moveMessage.textContent = "Déplacement en cours...";
+      moveModal.style.display = "flex";
+      setTimeout(() => {
+        moveModal.style.display = "none";
+      }, 2000);
+    }
     if (endCell.getAttribute("type") === "village") {
       const name = endCell.dataset.villageName;
       const imageSrc = "./assets/img/village.png";
@@ -460,6 +524,7 @@ function goTo(currentCellId, selectedCellId) {
       modalVillageImage.src = imageSrc;
       message.innerHTML = "Y'a foule ici!";
       merchantDiv.classList.remove("hidden");
+      peopleDiv.classList.remove("hidden");
       placeDiv.classList.add("hidden");
       allSellBtn.forEach((btn) => {
         btn.classList.remove("hidden");
@@ -467,6 +532,7 @@ function goTo(currentCellId, selectedCellId) {
       showMerch(endCell);
     } else {
       merchantDiv.classList.add("hidden");
+      peopleDiv.classList.add("hidden");
       placeDiv.classList.remove("hidden");
       allSellBtn.forEach((btn) => {
         btn.classList.add("hidden");
@@ -522,6 +588,7 @@ function pushInventory(item) {
 
 function showMerch(cell) {
   displayMerch.innerHTML = "";
+  displayPeople.innerHTML = "";
   const currentCity = allCities.find((city) => city.position == cell.id);
   if (currentCity) {
     const validMerchNames = getAdjacentCells(cell.id);
@@ -554,7 +621,6 @@ function showMerch(cell) {
           }
         }
         merchPrice.innerText = adjustedPrice.toFixed(2) + "$";
-
         const merchBuy = document.createElement("button");
         merchBuy.innerHTML = "Acheter";
         merchBuy.classList.add("p-2", "bg-orange-600");
@@ -569,6 +635,41 @@ function showMerch(cell) {
           buy(merch, adjustedPrice);
         });
       }
+    });
+    const cityPeople = [];
+    allPeople.forEach((person) => {
+      if (person.origin == currentCity.name) {
+        cityPeople.push(person);
+      }
+    });
+
+    cityPeople.forEach((person) => {
+      const peopleDiv = document.createElement("div");
+      peopleDiv.classList.add(
+        "flex",
+        "flex-col",
+        "items-center",
+        "justify-center",
+        "ml-6"
+      );
+      const peopleImg = document.createElement("img");
+      peopleImg.src = person.img;
+      peopleImg.classList.add("w-32");
+      const peopleNameElement = document.createElement("p");
+      peopleNameElement.innerText = person.name;
+
+      const peopleTalk = document.createElement("button");
+      peopleTalk.innerHTML = "Parler";
+      peopleTalk.classList.add("p-2", "bg-orange-600");
+
+      peopleDiv.appendChild(peopleImg);
+      peopleDiv.appendChild(peopleNameElement);
+      peopleDiv.appendChild(peopleTalk);
+      displayPeople.appendChild(peopleDiv);
+
+      peopleTalk.addEventListener("click", () => {
+        addToCrew(person);
+      });
     });
   }
 }
@@ -615,10 +716,23 @@ function sell(item) {
   console.log("Inventaire:", player.inventory);
 }
 
+function addToCrew(person) {
+  console.log(person);
+  let personImg = document.createElement("img");
+  personImg.src = person.img;
+  personImg.classList.add("w-20");
+  crewDiv.appendChild(personImg);
+  for (let i = 0; i < allPeople.length; i++) {
+    if (allPeople[i].name == person.name) {
+      allPeople.splice(i, 1);
+      console.log(allPeople);
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   await fetchCities();
   await fetchMerch();
+  await fetchPeople();
   await createGrid();
-  let chosenBiome = await randomBiome(allBiomes);
-  console.log(chosenBiome);
 });
